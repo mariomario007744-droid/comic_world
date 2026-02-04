@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class GoogleButton extends StatelessWidget {
   const GoogleButton({
-    super.key,
+    required this.text,
+    required this.onpressed
   });
-
+  final String text;
+  final void Function() onpressed;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -22,13 +24,11 @@ class GoogleButton extends StatelessWidget {
           'assets/images/free-google-icon-svg-download-png-189824.png',
           height: 22,
         ),
-        label: const Text(
-          'تسجيل الدخول بواسطة Google',
+        label: Text(
+          text,
           style: TextStyle(fontSize: 16),
         ),
-        onPressed: () {
-          // TODO: Google Sign In
-        },
+        onPressed: onpressed
       ),
     );
   }

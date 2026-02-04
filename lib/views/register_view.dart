@@ -1,5 +1,4 @@
-import 'package:comic_world/views/home_view.dart';
-import 'package:comic_world/views/register_view.dart';
+import 'package:comic_world/views/confirmation_view.dart';
 import 'package:comic_world/widgets/custom_form_button.dart';
 import 'package:comic_world/widgets/custom_password_text_form_field.dart';
 import 'package:comic_world/widgets/custom_text_form_field.dart';
@@ -9,10 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:comic_world/const.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class LoginView extends StatelessWidget {
+class RegisterView extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
+  final TextEditingController userName = TextEditingController();
   final supabase = Supabase.instance.client;
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class LoginView extends StatelessWidget {
                     const SizedBox(height: 40),
 
                     GoogleButton(
-                      text: 'تسجيل الدخول بواسطة Google',
+                      text: 'التسجيل بواسطة Google',
                       onpressed: () {},
                     ),
 
@@ -44,6 +44,19 @@ class LoginView extends StatelessWidget {
                     ),
 
                     const SizedBox(height: 20),
+
+                    CustomTextFormField(
+                      hint: 'الاسم',
+                      icon: Icons.person,
+                      controller: userName,
+                      validator: (String? value) {
+                        if (value?.replaceAll(' ', '') == '' || value == null) {
+                          return 'أدخل اسم المستخدم';
+                        }
+                      },
+                    ),
+
+                    const SizedBox(height: 16),
 
                     CustomTextFormField(
                       hint: 'البريد الإلكتروني',
@@ -63,7 +76,7 @@ class LoginView extends StatelessWidget {
                     CustomPasswordTextFormField(
                       controller: password,
                       validator: (String? value) {
-                        if (value == null || value.replaceAll(' ', '') == '') {
+                        if (value == null || value == '') {
                           return 'ادخل كلمة المرور';
                         } else if (value.length < 8) {
                           return 'كلمة مرور ضعيفة';
@@ -74,7 +87,7 @@ class LoginView extends StatelessWidget {
                     const SizedBox(height: 24),
 
                     CustomFormButton(
-                      text: 'تسجيل الدخول',
+                      text: 'إنشاء حساب',
                       onpressed: () async {
                         try {
                           if (formKey.currentState!.validate()) {
@@ -94,47 +107,39 @@ class LoginView extends StatelessWidget {
                                 .select()
                                 .eq('email', email.text)
                                 .maybeSingle();
-                            if (data == null) {
+                            if (data != null) {
                               Navigator.pop(context);
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('الحساب غير موجود')),
+                                SnackBar(content: Text('الايميل موجود بالفعل')),
                               );
                             } else {
-                              try {
-                                final AuthResponse res = await supabase.auth
-                                    .signInWithPassword(
+                              final AuthResponse
+                              res = await supabase.auth.signUp(
+                                email: email.text,
+                                password: password.text,
+                                emailRedirectTo:
+                                    'https://mariomario007744-droid.github.io/comic_knight/verify.html',
+
+                                data: {'user name': userName.text},
+                              );
+                              kUser = res.user;
+                              kSession = res.session;
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return ConfirmView(
                                       email: email.text,
                                       password: password.text,
                                     );
-                                kSession = res.session;
-                                kUser = res.user;
-                                Navigator.pop(context);
-                                if (kUser != null) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return HomeView();
-                                      },
-                                    ),
-                                  );
-                                }
-                              } on Exception catch (e) {
-                                Navigator.pop(context);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'الايميل او كلمة المرور غير صحيحة',
-                                    ),
-                                  ),
-                                );
-                              }
+                                  },
+                                ),
+                              );
                             }
                           }
                         } on Exception catch (e) {
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text(e.toString())));
+                          print('Mario $e');
                         }
                       },
                     ),
@@ -145,23 +150,13 @@ class LoginView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          'ليس لديك حساب؟ ',
-                          style: TextStyle(color: kTextColor),
-                        ),
+                        Text('لديك حساب؟', style: TextStyle(color: kTextColor)),
                         TextButton(
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return RegisterView();
-                                },
-                              ),
-                            );
+                            Navigator.pop(context);
                           },
                           child: Text(
-                            'إنشاء حساب',
+                            'تسجيل الدخول',
                             style: TextStyle(color: kThemeColor),
                           ),
                         ),
