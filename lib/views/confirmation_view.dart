@@ -132,9 +132,10 @@ class _ConfirmViewState extends State<ConfirmView> {
       kUser = res.user;
       kSession = res.session;
 
-      Navigator.pushReplacement(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (_) => const HomeView()),
+        (route) => false,
       );
     } catch (e) {
       ScaffoldMessenger.of(

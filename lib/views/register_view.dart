@@ -1,4 +1,5 @@
 import 'package:comic_world/views/confirmation_view.dart';
+import 'package:comic_world/views/home_view.dart';
 import 'package:comic_world/widgets/custom_form_button.dart';
 import 'package:comic_world/widgets/custom_password_text_form_field.dart';
 import 'package:comic_world/widgets/custom_text_form_field.dart';
@@ -6,6 +7,7 @@ import 'package:comic_world/widgets/google_button.dart';
 import 'package:comic_world/widgets/logo_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:comic_world/const.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RegisterView extends StatelessWidget {
@@ -32,10 +34,7 @@ class RegisterView extends StatelessWidget {
 
                     const SizedBox(height: 40),
 
-                    GoogleButton(
-                      text: 'التسجيل بواسطة Google',
-                      onpressed: () {},
-                    ),
+                    GoogleButton(text: 'التسجيل بواسطة Google'),
 
                     const SizedBox(height: 20),
 
@@ -139,7 +138,9 @@ class RegisterView extends StatelessWidget {
                             }
                           }
                         } on Exception catch (e) {
-                          print('Mario $e');
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text(e.toString())));
                         }
                       },
                     ),

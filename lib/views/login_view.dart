@@ -34,7 +34,6 @@ class LoginView extends StatelessWidget {
 
                     GoogleButton(
                       text: 'تسجيل الدخول بواسطة Google',
-                      onpressed: () {},
                     ),
 
                     const SizedBox(height: 20),
@@ -110,13 +109,14 @@ class LoginView extends StatelessWidget {
                                 kUser = res.user;
                                 Navigator.pop(context);
                                 if (kUser != null) {
-                                  Navigator.push(
+                                  Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) {
                                         return HomeView();
                                       },
                                     ),
+                                    (route) => false,
                                   );
                                 }
                               } on Exception catch (e) {
