@@ -1,4 +1,4 @@
-import 'package:comic_world/views/confirmation_view.dart';
+import 'package:comic_world/requests/authentication_logic.dart';
 import 'package:comic_world/widgets/custom_form_button.dart';
 import 'package:comic_world/widgets/custom_password_text_form_field.dart';
 import 'package:comic_world/widgets/custom_text_form_field.dart';
@@ -86,60 +86,7 @@ class RegisterView extends StatelessWidget {
                     CustomFormButton(
                       text: 'إنشاء حساب',
                       onpressed: () async {
-                        try {
-                          if (formKey.currentState!.validate()) {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Scaffold(
-                                  backgroundColor: Colors.transparent,
-                                  body: Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                );
-                              },
-                            );
-                            final data = await supabase
-                                .from('Users')
-                                .select()
-                                .eq('email', email.text)
-                                .maybeSingle();
-                            if (data != null) {
-                              Navigator.pop(context);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('الايميل موجود بالفعل')),
-                              );
-                            } else {
-                              final AuthResponse
-                              res = await supabase.auth.signUp(
-                                email: email.text,
-                                password: password.text,
-                                emailRedirectTo:
-                                    'https://mariomario007744-droid.github.io/comic_knight/verify.html',
-
-                                data: {'user name': userName.text},
-                              );
-                              kUser = res.user;
-                              kSession = res.session;
-                              Navigator.pop(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return ConfirmView(
-                                      email: email.text,
-                                      password: password.text,
-                                    );
-                                  },
-                                ),
-                              );
-                            }
-                          }
-                        } on Exception catch (e) {
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text(e.toString())));
-                        }
+                        await AuthenticationLogic().registerLogic(context, email.text, password.text, userName.text, formKey);
                       },
                     ),
 
@@ -170,4 +117,6 @@ class RegisterView extends StatelessWidget {
       ),
     );
   }
+
+
 }

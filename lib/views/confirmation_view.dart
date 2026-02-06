@@ -31,13 +31,13 @@ class _ConfirmViewState extends State<ConfirmView> {
   @override
   void initState() {
     super.initState();
-    generatedOtp = _generateOtp();
+    generatedOtp = generateOtp();
     otpCreatedAt = DateTime.now();
-    _sendOtpEmail();
-    _startResendTimer();
+    sendOtpEmail();
+    startResendTimer();
   }
 
-  void _startResendTimer() {
+  void startResendTimer() {
     canResend = false;
     resendSeconds = 30;
 
@@ -61,12 +61,12 @@ class _ConfirmViewState extends State<ConfirmView> {
     if (!canResend) return;
 
     setState(() {
-      generatedOtp = _generateOtp();
+      generatedOtp = generateOtp();
       otpCreatedAt = DateTime.now();
     });
 
-    await _sendOtpEmail();
-    _startResendTimer();
+    await sendOtpEmail();
+    startResendTimer();
 
     ScaffoldMessenger.of(
       context,
@@ -74,13 +74,13 @@ class _ConfirmViewState extends State<ConfirmView> {
   }
 
   // توليد OTP
-  String _generateOtp() {
+  String generateOtp() {
     final random = Random();
     return (100000 + random.nextInt(900000)).toString();
   }
 
   // إرسال OTP على الإيميل
-  Future<void> _sendOtpEmail() async {
+  Future<void> sendOtpEmail() async {
     try {
       await sendEmail(
         to: widget.email,

@@ -1,4 +1,4 @@
-import 'package:comic_world/views/home_view.dart';
+import 'package:comic_world/requests/authentication_logic.dart';
 import 'package:comic_world/views/register_view.dart';
 import 'package:comic_world/widgets/custom_form_button.dart';
 import 'package:comic_world/widgets/custom_password_text_form_field.dart';
@@ -75,67 +75,7 @@ class LoginView extends StatelessWidget {
                     CustomFormButton(
                       text: 'تسجيل الدخول',
                       onpressed: () async {
-                        try {
-                          if (formKey.currentState!.validate()) {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Scaffold(
-                                  backgroundColor: Colors.transparent,
-                                  body: Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                );
-                              },
-                            );
-                            final data = await supabase
-                                .from('Users')
-                                .select()
-                                .eq('email', email.text)
-                                .maybeSingle();
-                            if (data == null) {
-                              Navigator.pop(context);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('الحساب غير موجود')),
-                              );
-                            } else {
-                              try {
-                                final AuthResponse res = await supabase.auth
-                                    .signInWithPassword(
-                                      email: email.text,
-                                      password: password.text,
-                                    );
-                                kSession = res.session;
-                                kUser = res.user;
-                                Navigator.pop(context);
-                                if (kUser != null) {
-                                  Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return HomeView();
-                                      },
-                                    ),
-                                    (route) => false,
-                                  );
-                                }
-                              } on Exception catch (e) {
-                                Navigator.pop(context);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'الايميل او كلمة المرور غير صحيحة',
-                                    ),
-                                  ),
-                                );
-                              }
-                            }
-                          }
-                        } on Exception catch (e) {
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text(e.toString())));
-                        }
+                        await AuthenticationLogic().logInLogic(context, email.text, password.text, formKey);
                       },
                     ),
 
@@ -176,4 +116,6 @@ class LoginView extends StatelessWidget {
       ),
     );
   }
+
+  
 }
