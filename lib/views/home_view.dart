@@ -32,10 +32,10 @@ class HomeView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 24),
-                            SectionTitle(title: 'الأكثر مشاهدة'),
+                            SectionTitle(title: 'الأكثر مشاهدة',request:RequestData().fetchMostViewedComic(limit: 20),),
                             SizedBox(height: 12),
                             HorizontalListView(
-                              dataFunc: RequestData().fetchMostViewedComic(),
+                              dataFunc: RequestData().fetchMostViewedComic(limit: 10),
                             ),
                           ],
                         ),
@@ -48,9 +48,9 @@ class HomeView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 24),
-                            SectionTitle(title: 'كوميك جديدة'),
+                            SectionTitle(title: 'كوميك جديدة',request: RequestData().fetchNewComic(limit: 20),),
                             SizedBox(height: 12),
-                            ComicGrid(dataFunc: RequestData().fetchNewComic()),
+                            ComicGrid(dataFunc: RequestData().fetchNewComic(limit: 10)),
                           ],
                         ),
                       ),
@@ -62,12 +62,13 @@ class HomeView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 24),
-                            SectionTitle(title: 'DC'),
+                            SectionTitle(title: 'DC',request: RequestData().fetchMostViewedCompanyComic(company: 'DC Comics',limit: 20),),
                             SizedBox(height: 12),
                             HorizontalListView(
                               dataFunc: RequestData()
                                   .fetchMostViewedCompanyComic(
                                     company: 'DC Comics',
+                                    limit: 10,
                                   ),
                             ),
                           ],
@@ -81,12 +82,13 @@ class HomeView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 24),
-                            SectionTitle(title: 'Marvel'),
+                            SectionTitle(title: 'Marvel',request: RequestData().fetchMostViewedCompanyComic(company: 'Marvel',limit: 20),),
                             SizedBox(height: 12),
                             HorizontalListView(
                               dataFunc: RequestData()
                                   .fetchMostViewedCompanyComic(
                                     company: 'Marvel',
+                                    limit: 10,
                                   ),
                             ),
                             SizedBox(height: 32),

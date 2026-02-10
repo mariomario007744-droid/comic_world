@@ -33,7 +33,9 @@ class ComicView extends StatelessWidget {
                     const SizedBox(height: 16),
                     if (data.warning != '') WarningBox(warning: data.warning),
                     const SizedBox(height: 16),
-                    ActionButtons(),
+                    ActionButtons(
+                      comicId: data.id,
+                    ),
                     const SizedBox(height: 24),
                     ComicDescription(description: data.description),
                     const SizedBox(height: 24),

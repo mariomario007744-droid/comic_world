@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comic_world/models/comic_model.dart';
+import 'package:comic_world/widgets/custome_favorite_widget.dart';
 import 'package:flutter/material.dart';
 
 class ComicHeader extends StatelessWidget {
@@ -47,8 +48,6 @@ class ComicHeader extends StatelessWidget {
               ),
 
               const SizedBox(height: 12),
-
-              /// التقييم والمشاهدات
               Row(
                 children: [
                   Icon(Icons.star, color: Colors.amber, size: 18),
@@ -61,7 +60,7 @@ class ComicHeader extends StatelessWidget {
                   SizedBox(width: 4),
                   Text(data.viewedCount.toString(), style: TextStyle(color: Colors.white70)),
                   SizedBox(width: 12),
-                  Icon(Icons.favorite_border, color: Colors.white),
+                  CustomeFavoriteWidget(id: data.id),
                   SizedBox(width: 8),
                 ],
               ),
@@ -72,3 +71,4 @@ class ComicHeader extends StatelessWidget {
     );
   }
 }
+
