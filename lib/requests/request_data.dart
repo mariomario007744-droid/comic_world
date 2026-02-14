@@ -34,29 +34,32 @@ class RequestData {
     return data;
   }
 
+
+
+
   evaluationComic({required int evaluation, required int comicId}) async {
     final data = await supabase
   .from('List_of_ratings')
-  .select().eq('comic_id', comicId).eq('user_id', kUser!.email.toString()).maybeSingle();
+  .select().eq('comic_id', comicId).eq('email', kUser!.email.toString()).maybeSingle();
 
 
     if (data != null) {
   await supabase.from('List_of_ratings').update({
     'evaluation': evaluation,
-  }).eq('comic_id', comicId).eq('user_id', kUser!.email.toString()).select();
+  }).eq('comic_id', comicId).eq('email', kUser!.email.toString()).select();
 }else{
   await supabase
     .from('List_of_ratings')
     .insert({
       'evaluation': evaluation,
       'comic_id': comicId,
-      'user_id': kUser!.email.toString(),
+      'email': kUser!.email.toString(),
     });
 }
 
     final respones = await supabase
   .from('List_of_ratings')
-  .select('evaluation').eq('comic_id', comicId).eq('user_id', kUser!.email.toString());
+  .select('evaluation').eq('comic_id', comicId).eq('email', kUser!.email.toString());
   double sum = 0;
   for (var element in respones) {
     sum += element['evaluation'];
@@ -68,5 +71,39 @@ class RequestData {
       'evaluation': average,
     })
     .eq('id', comicId);
+  }
+
+
+
+  fetchPartComic({required int comicId}) async {
+    final data = await supabase
+        .from('comic_parts')
+        .select('link_pdf,part')
+        .eq('comic_id', comicId);
+    return data;
+  }
+
+
+  fetchCategoryComic({required int comicId}) async {
+    final data = await supabase
+        .from('comic_type')
+        .select('type')
+        .eq('comic_id', comicId);
+    return data;
+  }
+
+  fetchThisCategoryComic({required String category, required int limit}) async {
+    final comicsId = await supabase
+        .from('comic_type')
+        .select('comic_id')
+        .eq('type', category)
+        .limit(limit);
+        List  listData = [];
+        for (var element in comicsId) {
+          listData.add(element['comic_id']);
+        }
+        final data = await supabase
+        .from('comic').select().inFilter('id', listData);
+    return data;
   }
 }

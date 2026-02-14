@@ -1,4 +1,7 @@
 import 'package:comic_world/models/comic_model.dart';
+import 'package:comic_world/requests/request_data.dart';
+import 'package:comic_world/views/comic_grid_view.dart';
+import 'package:comic_world/widgets/comic_category.dart';
 import 'package:flutter/material.dart';
 
 class ComicInfo extends StatelessWidget {
@@ -9,14 +12,9 @@ class ComicInfo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Text(
-              'النوع: أكشن • فانتازيا',
-              style: TextStyle(color: Colors.white70),
-            ),
-          ],
-        ),
+        Text('النوع: ', style: TextStyle(color: Colors.white70)),
+        SizedBox(height: 6),
+        ComicCategory(data: data),
         SizedBox(height: 6),
         Row(
           children: [
@@ -29,7 +27,19 @@ class ComicInfo extends StatelessWidget {
                 data.productionCompany,
                 style: TextStyle(color: Colors.white70),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ComicGridView(
+                      dataFunc: RequestData().fetchMostViewedCompanyComic(
+                        company: data.productionCompany,
+                        limit: 40,
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -37,3 +47,4 @@ class ComicInfo extends StatelessWidget {
     );
   }
 }
+

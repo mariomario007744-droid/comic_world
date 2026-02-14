@@ -52,7 +52,12 @@ class GoogleButton extends StatelessWidget {
               idToken: idToken,
               accessToken: accessToken,
             );
+            
             if (res.user != null) {
+              await supabase
+  .from('Users')
+  .upsert({ 'email': "${res.user!.email}",})
+  .select();
               kUser = res.user;
               kSession = res.session;
               Navigator.pushReplacement(
