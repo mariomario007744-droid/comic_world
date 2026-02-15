@@ -106,4 +106,20 @@ class RequestData {
         .from('comic').select().inFilter('id', listData);
     return data;
   }
+
+
+  fetchOneComic({required int id})async{
+    final data = await supabase
+  .from('comic')
+  .select().eq('id', id).maybeSingle();
+  return data;
+  }
+
+  fetchSuggestions({required String query})async{
+    final data = await supabase
+  .from('comic')
+  .select('name,id')
+  .ilike('name', '%$query%');
+  return data;
+  }
 }

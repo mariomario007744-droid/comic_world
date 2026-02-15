@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comic_world/models/comic_model.dart';
 import 'package:comic_world/views/comic_view.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,11 @@ class _ComicGridState extends State<ComicGrid> {
   @override
   Widget build(BuildContext context) {
     return data == []
-        ? const Center(child: CircularProgressIndicator())
+        ? Center(
+          child: Container(
+            height: 150,
+            child: const Center(child: CircularProgressIndicator())),
+        )
         : GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -60,7 +65,7 @@ class _ComicGridState extends State<ComicGrid> {
                     color: kThemeColor,
                     borderRadius: BorderRadius.circular(12),
                     image: DecorationImage(
-                      image: NetworkImage(
+                      image: CachedNetworkImageProvider(
                         data[index].posterUrl,
                       ),
                       fit: BoxFit.cover,

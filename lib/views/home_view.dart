@@ -1,105 +1,116 @@
+import 'package:comic_world/cubits/search_suggestions/search_suggestions_cubit.dart';
+import 'package:comic_world/cubits/search_suggestions/search_suggestions_state.dart';
+import 'package:comic_world/models/comic_model.dart';
 import 'package:comic_world/requests/request_data.dart';
-import 'package:comic_world/widgets/comic_grid.dart';
+import 'package:comic_world/views/comic_view.dart';
 import 'package:comic_world/widgets/custom_home_app_bar.dart';
-import 'package:comic_world/widgets/horizontal_list_view.dart';
-import 'package:comic_world/widgets/section_title.dart';
+import 'package:comic_world/widgets/home_body.dart';
 import 'package:flutter/material.dart';
 import 'package:comic_world/const.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: kBackgroundColor,
         body: SafeArea(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: CustomHomeAppBar(),
-              ),
-              Expanded(
-                child: CustomScrollView(
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 24),
-                            SectionTitle(title: 'الأكثر مشاهدة',request:RequestData().fetchMostViewedComic(limit: 20),),
-                            SizedBox(height: 12),
-                            HorizontalListView(
-                              dataFunc: RequestData().fetchMostViewedComic(limit: 10),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 24),
-                            SectionTitle(title: 'كوميك جديدة',request: RequestData().fetchNewComic(limit: 20),),
-                            SizedBox(height: 12),
-                            ComicGrid(dataFunc: RequestData().fetchNewComic(limit: 10)),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 24),
-                            SectionTitle(title: 'DC',request: RequestData().fetchMostViewedCompanyComic(company: 'DC Comics',limit: 20),),
-                            SizedBox(height: 12),
-                            HorizontalListView(
-                              dataFunc: RequestData()
-                                  .fetchMostViewedCompanyComic(
-                                    company: 'DC Comics',
-                                    limit: 10,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 24),
-                            SectionTitle(title: 'Marvel',request: RequestData().fetchMostViewedCompanyComic(company: 'Marvel',limit: 20),),
-                            SizedBox(height: 12),
-                            HorizontalListView(
-                              dataFunc: RequestData()
-                                  .fetchMostViewedCompanyComic(
-                                    company: 'Marvel',
-                                    limit: 10,
-                                  ),
-                            ),
-                            SizedBox(height: 32),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+          child: BlocProvider(
+            create: (context) => SearchSuggestionsCubit(),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: CustomHomeAppBar(),
                 ),
-              ),
-            ],
+                BlocBuilder<SearchSuggestionsCubit, SearchSuggestionsState>(
+                  builder: (context, state) {
+                    if (state is SearchSuggestionsInitialState) {
+                      return HomeBody();
+                    } else {
+                      return Stack(
+                        children: [
+                          HomeBody(),
+                          GestureDetector(
+                            onTap: () {
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              BlocProvider.of<SearchSuggestionsCubit>(
+                                context,
+                              ).backToHome();
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height - 120,
+                              color: Colors.black.withValues(alpha: 0.6),
+                              child: state is SuggestionsState
+                                  ? ListView.builder(
+                                      itemCount: state.suggestions.length,
+                                      itemBuilder: (context, index) {
+                                        return ElevatedButton(
+                                          style: TextButton.styleFrom(
+                                            backgroundColor: Colors.white
+                                                .withValues(alpha: 0.2),
+                                          ),
+                                          onPressed: () async {
+                                            FocusManager.instance.primaryFocus?.unfocus();
+
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                );
+                                              },
+                                            );
+                                            final data = await RequestData()
+                                                .fetchOneComic(
+                                                  id: state
+                                                      .suggestions[index]['id'],
+                                                );
+                                            BlocProvider.of<
+                                                  SearchSuggestionsCubit
+                                                >(context)
+                                                .backToHome();
+                                            Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) {
+                                                  return ComicView(
+                                                    data: ComicModel.fromJson(
+                                                      data,
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
+                                          child: Text(
+                                            state.suggestions[index]['name'],
+                                            style: TextStyle(color: kTextColor),
+                                          ),
+                                        );
+                                      },
+                                    )
+                                  : Center(
+                                      child: Text(
+                                        'لا توجد اقتراحات',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,6 +1,8 @@
+import 'package:comic_world/cubits/search_suggestions/search_suggestions_cubit.dart';
 import 'package:comic_world/widgets/menu_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:comic_world/const.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomHomeAppBar extends StatelessWidget {
   @override
@@ -31,6 +33,9 @@ class CustomHomeAppBar extends StatelessWidget {
           // SEARCH FIELD
           Expanded(
             child: TextField(
+              onChanged: (value) {
+                BlocProvider.of<SearchSuggestionsCubit>(context).getSuggestions(query: value);
+              },
               style: TextStyle(color: kTextColor),
               decoration: InputDecoration(
                 hintText: 'ابحث عن كوميك...',
