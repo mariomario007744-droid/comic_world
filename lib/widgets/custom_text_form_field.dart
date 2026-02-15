@@ -2,7 +2,7 @@ import 'package:comic_world/const.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField({required this.hint,required this.icon,required this.validator,required this.controller});
+  const CustomTextFormField({super.key, required this.hint,required this.icon,required this.validator,required this.controller});
   final String hint;
   final IconData icon;
   final validator;

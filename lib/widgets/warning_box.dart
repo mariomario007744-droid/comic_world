@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class WarningBox extends StatelessWidget {
-  const WarningBox({required this.warning});
+  const WarningBox({super.key, required this.warning});
   final String warning;
 
   @override

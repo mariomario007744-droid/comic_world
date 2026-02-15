@@ -5,7 +5,7 @@ import 'package:comic_world/widgets/comic_category.dart';
 import 'package:flutter/material.dart';
 
 class ComicInfo extends StatelessWidget {
-  const ComicInfo({required this.data});
+  const ComicInfo({super.key, required this.data});
   final ComicModel data;
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class ComicInfo extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ComicGridView(
-                      dataFunc: RequestData().fetchMostViewedCompanyComic(
+                      dataFunc:()=> RequestData().fetchMostViewedCompanyComic(
                         company: data.productionCompany,
                         limit: 40,
                       ),

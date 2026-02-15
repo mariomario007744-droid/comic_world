@@ -14,6 +14,8 @@ class RegisterView extends StatelessWidget {
   final TextEditingController password = TextEditingController();
   final TextEditingController userName = TextEditingController();
   final supabase = Supabase.instance.client;
+
+  RegisterView({super.key});
   @override
   Widget build(BuildContext context) {
     return Directionality(

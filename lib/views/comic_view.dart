@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:comic_world/const.dart';
 
 class ComicView extends StatelessWidget {
-  const ComicView({required this.data});
+  const ComicView({super.key, required this.data});
   final ComicModel data;
 
   @override
@@ -39,7 +39,7 @@ class ComicView extends StatelessWidget {
                     const SizedBox(height: 24),
                     ComicInfo(data: data),
                     SizedBox(height: 24),
-                    ChaptersSection(comicId: data.id, bannerUrl: data.bannerUrl),
+                    ChaptersSection(comicId: data.id, bannerUrl: data.bannerUrl, posterUrl: data.posterUrl),
                   ],
                 ),
               ),

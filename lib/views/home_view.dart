@@ -23,24 +23,26 @@ class HomeView extends StatelessWidget {
             create: (context) => SearchSuggestionsCubit(),
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
+                const Padding(
+                  padding: EdgeInsets.all(16),
                   child: CustomHomeAppBar(),
                 ),
-                BlocBuilder<SearchSuggestionsCubit, SearchSuggestionsState>(
-                  builder: (context, state) {
-                    if (state is SearchSuggestionsInitialState) {
-                      return HomeBody();
-                    } else {
-                      return Stack(
-                        children: [
-                          HomeBody(),
-                          GestureDetector(
+                Stack(
+                  children: [
+                    const HomeBody(),
+                    BlocBuilder<SearchSuggestionsCubit, SearchSuggestionsState>(
+                      builder: (context, state) {
+                        if (state is SearchSuggestionsInitialState) {
+                          return Container();
+                        } else {
+                          return GestureDetector(
                             onTap: () {
-                              FocusManager.instance.primaryFocus?.unfocus();
-                              BlocProvider.of<SearchSuggestionsCubit>(
-                                context,
-                              ).backToHome();
+                              if (context.mounted) {
+                                FocusManager.instance.primaryFocus?.unfocus();
+                                BlocProvider.of<SearchSuggestionsCubit>(
+                                  context,
+                                ).backToHome();
+                              }
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width,
@@ -56,12 +58,13 @@ class HomeView extends StatelessWidget {
                                                 .withValues(alpha: 0.2),
                                           ),
                                           onPressed: () async {
-                                            FocusManager.instance.primaryFocus?.unfocus();
+                                            FocusManager.instance.primaryFocus
+                                                ?.unfocus();
 
                                             showDialog(
                                               context: context,
                                               builder: (context) {
-                                                return Center(
+                                                return const Center(
                                                   child:
                                                       CircularProgressIndicator(),
                                                 );
@@ -96,18 +99,18 @@ class HomeView extends StatelessWidget {
                                         );
                                       },
                                     )
-                                  : Center(
+                                  : const Center(
                                       child: Text(
                                         'لا توجد اقتراحات',
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(color: kTextColor),
                                       ),
                                     ),
                             ),
-                          ),
-                        ],
-                      );
-                    }
-                  },
+                          );
+                        }
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:comic_world/const.dart';
 
 class ComicGrid extends StatefulWidget {
-  const ComicGrid({required this.dataFunc});
-  final dataFunc;
+  const ComicGrid({super.key, required this.dataFunc});
+  final Future<dynamic> Function() dataFunc;
   @override
   State<ComicGrid> createState() => _ComicGridState();
 }
@@ -21,7 +21,7 @@ class _ComicGridState extends State<ComicGrid> {
   }
 
   getData() async {
-    final response = await widget.dataFunc;
+    final response = await widget.dataFunc();
     for (var element in response) {
       data.add(ComicModel.fromJson(element));
     }
@@ -32,7 +32,7 @@ class _ComicGridState extends State<ComicGrid> {
   Widget build(BuildContext context) {
     return data == []
         ? Center(
-          child: Container(
+          child: SizedBox(
             height: 150,
             child: const Center(child: CircularProgressIndicator())),
         )

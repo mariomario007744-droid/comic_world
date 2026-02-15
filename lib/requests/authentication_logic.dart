@@ -52,7 +52,7 @@ class AuthenticationLogic {
                 (route) => false,
               );
             }
-          } on Exception catch (e) {
+          } on Exception {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

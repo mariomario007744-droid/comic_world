@@ -5,7 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class GoogleButton extends StatelessWidget {
-  GoogleButton({required this.text});
+  GoogleButton({super.key, required this.text});
   final supabase = Supabase.instance.client;
 
   final String text;

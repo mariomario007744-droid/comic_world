@@ -14,6 +14,8 @@ class LoginView extends StatelessWidget {
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
   final supabase = Supabase.instance.client;
+
+  LoginView({super.key});
   @override
   Widget build(BuildContext context) {
     return Directionality(

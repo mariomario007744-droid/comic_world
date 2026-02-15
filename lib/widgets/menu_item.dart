@@ -5,7 +5,7 @@ class MenuItem extends StatelessWidget {
   final IconData icon;
   final String text;
 
-  const MenuItem({required this.icon, required this.text});
+  const MenuItem({super.key, required this.icon, required this.text});
 
   @override
   Widget build(BuildContext context) {

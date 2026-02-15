@@ -4,8 +4,8 @@ import 'package:comic_world/const.dart';
 
 class SectionTitle extends StatelessWidget {
   final String title;
-  final request;
-   SectionTitle({required this.title, required this.request});
+  final Future<dynamic> Function() request;
+   const SectionTitle({super.key, required this.title, required this.request});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class SectionTitle extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ComicGridView(dataFunc: request),
+                builder: (context) => ComicGridView(dataFunc:()=> request()),
               ),
             );
           },

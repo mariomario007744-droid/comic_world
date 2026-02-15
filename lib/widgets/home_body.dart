@@ -19,14 +19,14 @@ class HomeBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   SectionTitle(
                     title: 'الأكثر مشاهدة',
-                    request: RequestData().fetchMostViewedComic(limit: 20),
+                    request:() => RequestData().fetchMostViewedComic(limit: 20),
                   ),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   HorizontalListView(
-                    dataFunc: RequestData().fetchMostViewedComic(limit: 10),
+                    dataFunc:() => RequestData().fetchMostViewedComic(limit: 10),
                   ),
                 ],
               ),
@@ -38,13 +38,13 @@ class HomeBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 24),
+                const  SizedBox(height: 24),
                   SectionTitle(
                     title: 'كوميك جديدة',
-                    request: RequestData().fetchNewComic(limit: 20),
+                    request:() => RequestData().fetchNewComic(limit: 20),
                   ),
-                  SizedBox(height: 12),
-                  ComicGrid(dataFunc: RequestData().fetchNewComic(limit: 10)),
+                  const SizedBox(height: 12),
+                  ComicGrid(dataFunc:() => RequestData().fetchNewComic(limit: 10)),
                 ],
               ),
             ),
@@ -55,17 +55,17 @@ class HomeBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 24),
+                const  SizedBox(height: 24),
                   SectionTitle(
                     title: 'DC',
-                    request: RequestData().fetchMostViewedCompanyComic(
+                    request:() => RequestData().fetchMostViewedCompanyComic(
                       company: 'DC Comics',
                       limit: 20,
                     ),
                   ),
-                  SizedBox(height: 12),
+                const  SizedBox(height: 12),
                   HorizontalListView(
-                    dataFunc: RequestData().fetchMostViewedCompanyComic(
+                    dataFunc:() => RequestData().fetchMostViewedCompanyComic(
                       company: 'DC Comics',
                       limit: 10,
                     ),
@@ -80,22 +80,22 @@ class HomeBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   SectionTitle(
                     title: 'Marvel',
-                    request: RequestData().fetchMostViewedCompanyComic(
+                    request:() => RequestData().fetchMostViewedCompanyComic(
                       company: 'Marvel',
                       limit: 20,
                     ),
                   ),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   HorizontalListView(
-                    dataFunc: RequestData().fetchMostViewedCompanyComic(
+                    dataFunc:() => RequestData().fetchMostViewedCompanyComic(
                       company: 'Marvel',
                       limit: 10,
                     ),
                   ),
-                  SizedBox(height: 32),
+                  const SizedBox(height: 32),
                 ],
               ),
             ),

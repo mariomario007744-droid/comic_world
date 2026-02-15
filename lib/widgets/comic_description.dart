@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ComicDescription extends StatelessWidget {
-  const ComicDescription({required this.description});
+  const ComicDescription({super.key, required this.description});
   final String description;
   @override
   Widget build(BuildContext context) {

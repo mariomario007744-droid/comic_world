@@ -2,6 +2,8 @@ import 'package:comic_world/widgets/menu_item.dart';
 import 'package:flutter/material.dart';
 
 class MenuSheet extends StatelessWidget {
+  const MenuSheet({super.key});
+
 
   @override
   Widget build(BuildContext context) {

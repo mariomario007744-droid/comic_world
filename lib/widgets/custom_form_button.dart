@@ -2,7 +2,7 @@ import 'package:comic_world/const.dart';
 import 'package:flutter/material.dart';
 
 class CustomFormButton extends StatelessWidget {
-  CustomFormButton({
+  const CustomFormButton({super.key, 
     required this.text,
     required this.onpressed
   });

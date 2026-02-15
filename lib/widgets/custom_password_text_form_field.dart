@@ -2,7 +2,7 @@ import 'package:comic_world/const.dart';
 import 'package:flutter/material.dart';
 
 class CustomPasswordTextFormField extends StatefulWidget {
-  CustomPasswordTextFormField({required this.validator,required this.controller});
+  const CustomPasswordTextFormField({super.key, required this.validator,required this.controller});
   final validator;
   final TextEditingController controller;
   @override

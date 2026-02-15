@@ -4,7 +4,7 @@ import 'package:comic_world/views/comic_view.dart';
 import 'package:flutter/material.dart';
 
 class HorizontalListView extends StatefulWidget {
-  const HorizontalListView({required this.dataFunc});
+  const HorizontalListView({super.key, required this.dataFunc});
   final dataFunc;
 
   @override
@@ -21,7 +21,7 @@ class _HorizontalListViewState extends State<HorizontalListView> {
   }
 
   getData() async {
-    final response = await widget.dataFunc;
+    final response = await widget.dataFunc();
     for (var element in response) {
       data.add(ComicModel.fromJson(element));
     }

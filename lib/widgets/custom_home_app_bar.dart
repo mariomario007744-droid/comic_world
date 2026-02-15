@@ -5,6 +5,8 @@ import 'package:comic_world/const.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomHomeAppBar extends StatelessWidget {
+  const CustomHomeAppBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(

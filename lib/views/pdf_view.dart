@@ -6,7 +6,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 class ComicPdfView extends StatefulWidget {
   final String pdfUrl;
   final int comicId;
-  const ComicPdfView({Key? key, required this.pdfUrl, required this.comicId}) : super(key: key);
+  const ComicPdfView({super.key, required this.pdfUrl, required this.comicId});
 
   @override
   _ComicPdfViewState createState() => _ComicPdfViewState();

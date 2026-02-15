@@ -3,7 +3,7 @@ import 'package:comic_world/widgets/star_rating.dart';
 import 'package:flutter/material.dart';
 
 class ActionButtons extends StatelessWidget {
-  const ActionButtons({required this.comicId});
+  const ActionButtons({super.key, required this.comicId});
   final int comicId;
   @override
   Widget build(BuildContext context) {

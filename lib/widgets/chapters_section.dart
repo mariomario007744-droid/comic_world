@@ -10,9 +10,12 @@ class ChaptersSection extends StatefulWidget {
     super.key,
     required this.comicId,
     required this.bannerUrl,
+    required this.posterUrl,
   });
   final int comicId;
   final String bannerUrl;
+  final String posterUrl;
+
   @override
   State<ChaptersSection> createState() => _ChaptersSectionState();
 }
@@ -26,13 +29,17 @@ class _ChaptersSectionState extends State<ChaptersSection> {
   }
 
   getData() async {
-    final response = await RequestData().fetchPartComic(
-      comicId: widget.comicId,
-    );
-    for (var element in response) {
-      dataParts.add(ComicPartModel.fromJson(element));
+    if (mounted) {
+      final response = await RequestData().fetchPartComic(
+        comicId: widget.comicId,
+      );
+      for (var element in response) {
+        dataParts.add(ComicPartModel.fromJson(element));
+      }
+      if (mounted) {
+        setState(() {});
+      }
     }
-    setState(() {});
   }
 
   @override
@@ -117,12 +124,20 @@ class _ChaptersSectionState extends State<ChaptersSection> {
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Container(
+                                        child: SizedBox(
                                           width: double.infinity,
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: Center(child: const Text("فتح", style: TextStyle(color: Colors.white))),
-                                          )),
+                                            child: Center(
+                                              child: const Text(
+                                                "فتح",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
