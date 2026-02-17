@@ -122,4 +122,38 @@ class RequestData {
   .ilike('name', '%$query%');
   return data;
   }
+
+  featchFavoriteList()async{
+    final idComics = await supabase
+  .from('favorite')
+  .select('id_comic').eq('user', kUser!.email.toString());
+  List listId = [];
+  for (var element in idComics) {
+    listId.add(element['id_comic']);
+  }
+  final data = await supabase
+  .from('comic')
+  .select()
+  .inFilter('id', listId);
+  return data;
+  }
+
+
+
+    lastViewed() async {
+    final idComics = await supabase
+        .from('most_viewed')
+        .select('comic_id').eq('user_name', kUser!.email.toString())
+        .order('created_at', ascending: false)
+        .limit(20);
+          List listId = [];
+  for (var element in idComics) {
+    listId.add(element['comic_id']);
+  }
+  final data = await supabase
+  .from('comic')
+  .select()
+  .inFilter('id', listId);
+  return data;
+  }
 }

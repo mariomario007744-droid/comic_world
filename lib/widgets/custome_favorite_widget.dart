@@ -16,6 +16,7 @@ class _CustomeFavoriteWidgetState extends State<CustomeFavoriteWidget> {
     final supabase = Supabase.instance.client;
     String  chick='null';
 chickFavorite()async{
+  if (mounted) {
   final  response = await supabase
   .from('favorite')
   .select().eq('user', kUser!.email.toString()).eq('id_comic', widget.id).maybeSingle();
@@ -28,6 +29,7 @@ chickFavorite()async{
   setState(() {
     
   });
+  }
 }
 }
 
@@ -41,23 +43,25 @@ chickFavorite()async{
     return  chick=='null'?IconButton(icon: Icon(Icons.favorite_outline,color: Colors.white70,),onPressed: () {
       
     },): IconButton(onPressed: ()async{
-      if (chick=='true') {
-        chick='false';
-  await supabase
-    .from('favorite')
-    .delete()
-    .eq('id_comic', widget.id).eq('user', kUser!.email.toString());
-    setState(() {
-      
-    });
-}else if(chick=='false'){
-  chick='true';
-  await supabase
-    .from('favorite')
-    .insert({'id_comic': widget.id, 'user': kUser!.email.toString()});
-    setState(() {
-      
-    });
+      if (mounted) {
+  if (chick=='true') {
+    chick='false';
+    await supabase
+      .from('favorite')
+      .delete()
+      .eq('id_comic', widget.id).eq('user', kUser!.email.toString());
+      setState(() {
+  
+      });
+  }else if(chick=='false'){
+    chick='true';
+    await supabase
+      .from('favorite')
+      .insert({'id_comic': widget.id, 'user': kUser!.email.toString()});
+      setState(() {
+  
+      });
+  }
 }
     }, icon:chick=='false'? Icon(Icons.favorite_outline,color: Colors.white70,):Icon(Icons.favorite,color: Colors.redAccent,));
   }

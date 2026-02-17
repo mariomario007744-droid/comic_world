@@ -17,7 +17,7 @@ class ComicGridView extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                SizedBox(height: 24),
+              const  SizedBox(height: 24),
 
                 Expanded(child: ComicGrid(dataFunc: dataFunc)),
               ],

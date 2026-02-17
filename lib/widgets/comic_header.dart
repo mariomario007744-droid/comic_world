@@ -8,7 +8,7 @@ class ComicHeader extends StatelessWidget {
   final ComicModel data;
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return  Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
@@ -33,7 +33,7 @@ class ComicHeader extends StatelessWidget {
                 data.name,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
+                style:const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -54,14 +54,14 @@ class ComicHeader extends StatelessWidget {
                   SizedBox(width: 4),
                   Text(data.evaluation.toString(), style: TextStyle(color: Colors.white)),
 
-                  SizedBox(width: 12),
+                const  SizedBox(width: 12),
 
-                  Icon(Icons.remove_red_eye, color: Colors.white70, size: 18),
-                  SizedBox(width: 4),
+                const  Icon(Icons.remove_red_eye, color: Colors.white70, size: 18),
+                const  SizedBox(width: 4),
                   Text(data.viewedCount.toString(), style: TextStyle(color: Colors.white70)),
-                  SizedBox(width: 12),
+                const  SizedBox(width: 12),
                   CustomeFavoriteWidget(id: data.id),
-                  SizedBox(width: 8),
+                const  SizedBox(width: 8),
                 ],
               ),
             ],

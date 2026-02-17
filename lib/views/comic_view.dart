@@ -15,7 +15,7 @@ class ComicView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
+    return  Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: kBackgroundColor,
@@ -38,7 +38,7 @@ class ComicView extends StatelessWidget {
                     ComicDescription(description: data.description),
                     const SizedBox(height: 24),
                     ComicInfo(data: data),
-                    SizedBox(height: 24),
+                    const  SizedBox(height: 24),
                     ChaptersSection(comicId: data.id, bannerUrl: data.bannerUrl, posterUrl: data.posterUrl),
                   ],
                 ),

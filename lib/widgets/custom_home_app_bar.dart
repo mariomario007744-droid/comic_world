@@ -32,7 +32,6 @@ class CustomHomeAppBar extends StatelessWidget {
             },
           ),
 
-          // SEARCH FIELD
           Expanded(
             child: TextField(
               onChanged: (value) {

@@ -12,13 +12,13 @@ class ComicInfo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('النوع: ', style: TextStyle(color: Colors.white70)),
-        SizedBox(height: 6),
+      const  Text('النوع: ', style: TextStyle(color: Colors.white70)),
+      const  SizedBox(height: 6),
         ComicCategory(data: data),
-        SizedBox(height: 6),
+        const SizedBox(height: 6),
         Row(
           children: [
-            Text('الشركة المنتجة: ', style: TextStyle(color: Colors.white70)),
+          const  Text('الشركة المنتجة: ', style: TextStyle(color: Colors.white70)),
             TextButton(
               style: TextButton.styleFrom(
                 backgroundColor: Colors.white.withValues(alpha: 0.2),

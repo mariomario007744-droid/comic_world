@@ -45,7 +45,7 @@ class _ChaptersSectionState extends State<ChaptersSection> {
   @override
   Widget build(BuildContext context) {
     return dataParts == []
-        ? Center(child: CircularProgressIndicator())
+        ?const Center(child: CircularProgressIndicator())
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -98,8 +98,8 @@ class _ChaptersSectionState extends State<ChaptersSection> {
                                     ),
                                   ),
 
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                const  Padding(
+                                    padding: EdgeInsets.all(8.0),
                                     child: Text(
                                       'شاهد اعلان للمتابعه',
                                       style: TextStyle(color: Colors.white),
@@ -122,14 +122,14 @@ class _ChaptersSectionState extends State<ChaptersSection> {
                                           ),
                                         );
                                       },
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                      child:const Padding(
+                                        padding: EdgeInsets.all(8.0),
                                         child: SizedBox(
                                           width: double.infinity,
                                           child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
+                                            padding: EdgeInsets.all(8.0),
                                             child: Center(
-                                              child: const Text(
+                                              child: Text(
                                                 "فتح",
                                                 style: TextStyle(
                                                   color: Colors.white,
