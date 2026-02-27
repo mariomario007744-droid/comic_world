@@ -50,6 +50,7 @@ class _ComicCategoryState extends State<ComicCategory> {
     context,
     MaterialPageRoute(
       builder: (context) => ComicGridView(
+        title: categoryName,
         dataFunc:() => RequestData().fetchThisCategoryComic(
           category: categoryName,
           limit: 40,

@@ -21,11 +21,13 @@ class _ComicGridState extends State<ComicGrid> {
   }
 
   getData() async {
-    final response = await widget.dataFunc();
-    for (var element in response) {
-      data.add(ComicModel.fromJson(element));
-    }
-    setState(() {});
+    if (mounted) {
+  final response = await widget.dataFunc();
+  for (var element in response) {
+    data.add(ComicModel.fromJson(element));
+  }
+  setState(() {});
+}
   }
 
   @override

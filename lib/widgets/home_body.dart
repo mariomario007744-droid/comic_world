@@ -33,19 +33,21 @@ class HomeBody extends StatelessWidget {
             ),
           ),
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                const  SizedBox(height: 24),
-                  SectionTitle(
-                    title: 'كوميك جديدة',
-                    request:() => RequestData().fetchNewComic(limit: 20),
-                  ),
-                  const SizedBox(height: 12),
-                  ComicGrid(dataFunc:() => RequestData().fetchNewComic(limit: 10)),
-                ],
+            child: RepaintBoundary(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                  const  SizedBox(height: 24),
+                    SectionTitle(
+                      title: 'كوميك جديدة',
+                      request:() => RequestData().fetchNewComic(limit: 20),
+                    ),
+                    const SizedBox(height: 12),
+                    ComicGrid(dataFunc:() => RequestData().fetchNewComic(limit: 10)),
+                  ],
+                ),
               ),
             ),
           ),

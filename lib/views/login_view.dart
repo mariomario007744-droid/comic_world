@@ -1,5 +1,6 @@
 import 'package:comic_world/requests/authentication_logic.dart';
 import 'package:comic_world/views/register_view.dart';
+import 'package:comic_world/views/forgot_password_view.dart';
 import 'package:comic_world/widgets/custom_form_button.dart';
 import 'package:comic_world/widgets/custom_password_text_form_field.dart';
 import 'package:comic_world/widgets/custom_text_form_field.dart';
@@ -10,6 +11,7 @@ import 'package:comic_world/const.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginView extends StatelessWidget {
+  final String id='LoginView';
   final formKey = GlobalKey<FormState>();
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
@@ -80,7 +82,23 @@ class LoginView extends StatelessWidget {
                         await AuthenticationLogic().logInLogic(context, email.text, password.text, formKey);
                       },
                     ),
-
+                    const SizedBox(height: 16),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return ForgotPasswordView();
+                            },
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'هل نسيت كلمة السر؟',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                     const SizedBox(height: 16),
 
                     Row(

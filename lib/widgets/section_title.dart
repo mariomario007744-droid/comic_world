@@ -25,7 +25,7 @@ class SectionTitle extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ComicGridView(dataFunc:()=> request()),
+                builder: (context) => ComicGridView(dataFunc:()=> request(),title: title,),
               ),
             );
           },

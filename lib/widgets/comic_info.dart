@@ -32,6 +32,7 @@ class ComicInfo extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ComicGridView(
+                      title: data.productionCompany,
                       dataFunc:()=> RequestData().fetchMostViewedCompanyComic(
                         company: data.productionCompany,
                         limit: 40,

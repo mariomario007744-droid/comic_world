@@ -3,8 +3,9 @@ import 'package:comic_world/widgets/comic_grid.dart';
 import 'package:flutter/material.dart';
 
 class ComicGridView extends StatelessWidget {
-  const ComicGridView({super.key, required this.dataFunc});
+  const ComicGridView({super.key, required this.dataFunc,required this.title});
   final Future<dynamic> Function() dataFunc;
+  final String title;
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -17,7 +18,14 @@ class ComicGridView extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-              const  SizedBox(height: 24),
+                Padding(
+                  padding:const EdgeInsets.all(8.0),
+                  child: Text(
+                    title,
+                    style: TextStyle(color: kTextColor, fontSize: 32),
+                  ),
+                ),
+                const SizedBox(height: 24),
 
                 Expanded(child: ComicGrid(dataFunc: dataFunc)),
               ],

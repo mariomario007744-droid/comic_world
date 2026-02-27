@@ -13,7 +13,7 @@ class LogoWidget extends StatelessWidget {
         SizedBox(
           width: MediaQuery.of(context).size.width / 3,
           child: Image.asset(
-            'assets/images/IMG_20260202_213638.png',
+            'assets/images/Picsart_26-02-19_03-22-53-564.png',
           ),
         ),
         SizedBox(height: 12),

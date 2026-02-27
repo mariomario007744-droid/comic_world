@@ -144,8 +144,7 @@ class RequestData {
     final idComics = await supabase
         .from('most_viewed')
         .select('comic_id').eq('user_name', kUser!.email.toString())
-        .order('created_at', ascending: false)
-        .limit(20);
+        .order('created_at', ascending: false);
           List listId = [];
   for (var element in idComics) {
     listId.add(element['comic_id']);
@@ -154,6 +153,14 @@ class RequestData {
   .from('comic')
   .select()
   .inFilter('id', listId);
+  return data;
+  }
+
+
+  featchCategorys()async{
+        final data = await supabase
+  .from('types')
+  .select();
   return data;
   }
 }

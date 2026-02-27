@@ -10,6 +10,8 @@ import 'package:comic_world/const.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeView extends StatelessWidget {
+  final String id='HomeView';
+
   const HomeView({super.key});
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,10 @@ class HomeView extends StatelessWidget {
                     BlocBuilder<SearchSuggestionsCubit, SearchSuggestionsState>(
                       builder: (context, state) {
                         if (state is SearchSuggestionsInitialState) {
-                          return Container();
+                          return const SizedBox(
+                            height: 0,
+                            width: 0,
+                          );
                         } else {
                           return GestureDetector(
                             onTap: () {

@@ -52,11 +52,10 @@ class GoogleButton extends StatelessWidget {
               idToken: idToken,
               accessToken: accessToken,
             );
-            
             if (res.user != null) {
               await supabase
   .from('Users')
-  .upsert({ 'email': "${res.user!.email}",})
+  .upsert({ 'email': "${res.user!.email}"},onConflict: 'email')
   .select();
               kUser = res.user;
               kSession = res.session;
@@ -68,7 +67,7 @@ class GoogleButton extends StatelessWidget {
           } catch (e) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(SnackBar(content: Text('حدث خطأ: $e')));
+            ).showSnackBar(SnackBar(content: Text('لم يتم تسجيل الدخول\nحدث خطأ: $e')));
           }
         },
       ),
