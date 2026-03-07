@@ -10,11 +10,13 @@ import 'package:comic_world/const.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeView extends StatelessWidget {
-  final String id='HomeView';
+  final String id = 'HomeView';
 
   const HomeView({super.key});
   @override
   Widget build(BuildContext context) {
+    final double top = MediaQuery.of(context).viewPadding.top;
+    final double bottom = MediaQuery.of(context).viewPadding.bottom;
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -25,20 +27,17 @@ class HomeView extends StatelessWidget {
             create: (context) => SearchSuggestionsCubit(),
             child: Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.all(16),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
                   child: CustomHomeAppBar(),
                 ),
                 Stack(
                   children: [
-                    const HomeBody(),
+                    HomeBody(top: top, bottom: bottom),
                     BlocBuilder<SearchSuggestionsCubit, SearchSuggestionsState>(
                       builder: (context, state) {
                         if (state is SearchSuggestionsInitialState) {
-                          return const SizedBox(
-                            height: 0,
-                            width: 0,
-                          );
+                          return const SizedBox(height: 0, width: 0);
                         } else {
                           return GestureDetector(
                             onTap: () {
@@ -51,7 +50,7 @@ class HomeView extends StatelessWidget {
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height - 120,
+                              height: MediaQuery.of(context).size.height - (82+top+bottom),
                               color: Colors.black.withValues(alpha: 0.6),
                               child: state is SuggestionsState
                                   ? ListView.builder(

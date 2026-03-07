@@ -5,12 +5,14 @@ import 'package:comic_world/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 
 class HomeBody extends StatelessWidget {
-  const HomeBody({super.key});
+  const HomeBody({required this.top, required this.bottom});
+  final double top;
+  final double bottom;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height - 120,
+      height: MediaQuery.of(context).size.height - (82 + top + bottom),
       child: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
@@ -22,11 +24,13 @@ class HomeBody extends StatelessWidget {
                   const SizedBox(height: 24),
                   SectionTitle(
                     title: 'الأكثر مشاهدة',
-                    request:() => RequestData().fetchMostViewedComic(limit: 20),
+                    request: () =>
+                        RequestData().fetchMostViewedComic(limit: 20),
                   ),
                   const SizedBox(height: 12),
                   HorizontalListView(
-                    dataFunc:() => RequestData().fetchMostViewedComic(limit: 10),
+                    dataFunc: () =>
+                        RequestData().fetchMostViewedComic(limit: 10),
                   ),
                 ],
               ),
@@ -39,13 +43,15 @@ class HomeBody extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  const  SizedBox(height: 24),
+                    const SizedBox(height: 24),
                     SectionTitle(
                       title: 'كوميك جديدة',
-                      request:() => RequestData().fetchNewComic(limit: 20),
+                      request: () => RequestData().fetchNewComic(limit: 20),
                     ),
                     const SizedBox(height: 12),
-                    ComicGrid(dataFunc:() => RequestData().fetchNewComic(limit: 10)),
+                    ComicGrid(
+                      dataFunc: () => RequestData().fetchNewComic(limit: 10),
+                    ),
                   ],
                 ),
               ),
@@ -57,17 +63,17 @@ class HomeBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                const  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   SectionTitle(
                     title: 'DC',
-                    request:() => RequestData().fetchMostViewedCompanyComic(
+                    request: () => RequestData().fetchMostViewedCompanyComic(
                       company: 'DC Comics',
                       limit: 20,
                     ),
                   ),
-                const  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   HorizontalListView(
-                    dataFunc:() => RequestData().fetchMostViewedCompanyComic(
+                    dataFunc: () => RequestData().fetchMostViewedCompanyComic(
                       company: 'DC Comics',
                       limit: 10,
                     ),
@@ -85,14 +91,14 @@ class HomeBody extends StatelessWidget {
                   const SizedBox(height: 24),
                   SectionTitle(
                     title: 'Marvel',
-                    request:() => RequestData().fetchMostViewedCompanyComic(
+                    request: () => RequestData().fetchMostViewedCompanyComic(
                       company: 'Marvel',
                       limit: 20,
                     ),
                   ),
                   const SizedBox(height: 12),
                   HorizontalListView(
-                    dataFunc:() => RequestData().fetchMostViewedCompanyComic(
+                    dataFunc: () => RequestData().fetchMostViewedCompanyComic(
                       company: 'Marvel',
                       limit: 10,
                     ),

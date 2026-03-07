@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:comic_world/const.dart';
 
 class ComicGrid extends StatefulWidget {
-  const ComicGrid({super.key, required this.dataFunc});
+  const ComicGrid({super.key, required this.dataFunc,this.scrolling=false});
   final Future<dynamic> Function() dataFunc;
+  final bool scrolling;
   @override
   State<ComicGrid> createState() => _ComicGridState();
 }
@@ -40,7 +41,7 @@ class _ComicGridState extends State<ComicGrid> {
         )
         : GridView.builder(
             shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
+            physics:widget.scrolling?ScrollPhysics(): NeverScrollableScrollPhysics(),
             itemCount: data.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
