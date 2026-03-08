@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ResetPasswordView extends StatelessWidget {
-    final String id='ResetPasswordView';
+  final String id = 'ResetPasswordView';
   final formKey = GlobalKey<FormState>();
   final TextEditingController password = TextEditingController();
 
@@ -45,26 +45,30 @@ class ResetPasswordView extends StatelessWidget {
 
                     CustomFormButton(
                       text: 'إعادة تعيين كلمة المرور',
-                       onpressed: () async {
-  if (formKey.currentState!.validate()) {
+                      onpressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          try {
+                            await Supabase.instance.client.auth.updateUser(
+                              UserAttributes(password: password.text.trim()),
+                            );
 
-    try {
-      await Supabase.instance.client.auth.updateUser(
-        UserAttributes(password: password.text.trim()),
-      );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('تم تغيير كلمة السر بنجاح'),
+                              ),
+                            );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('تم تغيير كلمة السر بنجاح')),
-      );
-
-      Navigator.popUntil(context, (route) => route.isFirst);
-    } on AuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message)),
-      );
-    }
-  }
-},
+                            Navigator.popUntil(
+                              context,
+                              (route) => route.isFirst,
+                            );
+                          } on AuthException catch (e) {
+                            ScaffoldMessenger.of(
+                              context,
+                            ).showSnackBar(SnackBar(content: Text(e.message)));
+                          }
+                        }
+                      },
                     ),
                   ],
                 ),
