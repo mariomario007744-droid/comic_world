@@ -3,6 +3,7 @@ import 'package:comic_world/const.dart';
 import 'package:comic_world/models/comic_part_model.dart';
 import 'package:comic_world/requests/request_data.dart';
 import 'package:comic_world/views/pdf_view.dart';
+import 'package:comic_world/widgets/custom_show_dialog.dart';
 import 'package:flutter/material.dart';
 
 class ChaptersSection extends StatefulWidget {
@@ -45,7 +46,7 @@ class _ChaptersSectionState extends State<ChaptersSection> {
   @override
   Widget build(BuildContext context) {
     return dataParts == []
-        ?const Center(child: CircularProgressIndicator())
+        ? const Center(child: CircularProgressIndicator())
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -98,7 +99,7 @@ class _ChaptersSectionState extends State<ChaptersSection> {
                                     ),
                                   ),
 
-                                const  Padding(
+                                  const Padding(
                                     padding: EdgeInsets.all(8.0),
                                     child: Text(
                                       'شاهد اعلان للمتابعه',
@@ -112,17 +113,32 @@ class _ChaptersSectionState extends State<ChaptersSection> {
                                         backgroundColor: kThemeColor,
                                       ),
                                       onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => ComicPdfView(
-                                              pdfUrl: dataParts[index].pdfUrl,
-                                              comicId: widget.comicId,
-                                            ),
-                                          ),
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return CustomShowDialog(
+                                              title: 'شاهد اعلان للمتابعه',
+                                              buttonText: 'شاهد',
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ComicPdfView(
+                                                          pdfUrl:
+                                                              dataParts[index]
+                                                                  .pdfUrl,
+                                                          comicId:
+                                                              widget.comicId,
+                                                        ),
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          },
                                         );
                                       },
-                                      child:const Padding(
+                                      child: const Padding(
                                         padding: EdgeInsets.all(8.0),
                                         child: SizedBox(
                                           width: double.infinity,

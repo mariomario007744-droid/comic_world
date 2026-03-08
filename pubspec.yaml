@@ -43,6 +43,7 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^32.2.3
   flutter_bloc: ^9.1.1
   app_links: ^6.1.0
+  google_mobile_ads: ^7.0.0
 
 dev_dependencies:
   flutter_test:

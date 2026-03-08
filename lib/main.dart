@@ -4,6 +4,7 @@ import 'package:comic_world/views/home_view.dart';
 import 'package:comic_world/views/login_view.dart';
 import 'package:comic_world/views/reset_password_view.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -16,6 +17,8 @@ void main() async {
     kUser = Supabase.instance.client.auth.currentUser;
     kSession = Supabase.instance.client.auth.currentSession;
   }
+  // Initialize the Mobile Ads SDK.
+  MobileAds.instance.initialize();
   runApp(ComicWorld());
   
   _handleDeepLinks();

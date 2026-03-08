@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 class CustomShowDialog extends StatelessWidget {
   final String title;
   final String buttonText;
+  final  void Function()? onPressed;
   const CustomShowDialog({
     required this.title,
     required this.buttonText,
-  });
+    this.onPressed
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class CustomShowDialog extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: kThemeColor, // نفس الأزرق اللي بالصورة
+          color: kThemeColor,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
@@ -41,7 +43,7 @@ class CustomShowDialog extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: ()=>Navigator.pop(context),
+                onPressed:onPressed ?? ()=>Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor:const Color(0xFF8AE041),
                   padding: const EdgeInsets.symmetric(vertical: 14),
