@@ -4,8 +4,9 @@ import 'package:comic_world/views/home_view.dart';
 import 'package:comic_world/views/login_view.dart';
 import 'package:comic_world/views/reset_password_view.dart';
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+// import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:unity_ads_plugin/unity_ads_plugin.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -18,9 +19,11 @@ void main() async {
     kSession = Supabase.instance.client.auth.currentSession;
   }
   // Initialize the Mobile Ads SDK.
-  MobileAds.instance.initialize();
+  WidgetsFlutterBinding.ensureInitialized();
+  // MobileAds.instance.initialize();
+  UnityAds.init(gameId: '6061077',testMode: true);
   runApp(ComicWorld());
-  
+
   _handleDeepLinks();
 }
 
@@ -34,13 +37,16 @@ void _handleDeepLinks() async {
   }
 
   // الاستماع للروابط أثناء تشغيل التطبيق
-  appLinks.uriLinkStream.listen((Uri? uri) {
-    if (uri != null && _isResetPasswordLink(uri)) {
-      _navigateToResetPassword();
-    }
-  }, onError: (err) {
-    print('خطأ في استقبال الرابط: $err');
-  });
+  appLinks.uriLinkStream.listen(
+    (Uri? uri) {
+      if (uri != null && _isResetPasswordLink(uri)) {
+        _navigateToResetPassword();
+      }
+    },
+    onError: (err) {
+      print('خطأ في استقبال الرابط: $err');
+    },
+  );
 }
 
 bool _isResetPasswordLink(Uri uri) {
@@ -64,7 +70,7 @@ class ComicWorld extends StatelessWidget {
 
       initialRoute: kSession == null ? LoginView().id : HomeView().id,
       routes: {
-        LoginView().id: (context) =>  LoginView(),
+        LoginView().id: (context) => LoginView(),
         HomeView().id: (context) => const HomeView(),
         ResetPasswordView().id: (context) => ResetPasswordView(),
       },

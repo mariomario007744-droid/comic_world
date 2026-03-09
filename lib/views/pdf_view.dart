@@ -1,7 +1,9 @@
 import 'package:comic_world/const.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:unity_ads_plugin/unity_ads_plugin.dart';
 
 class ComicPdfView extends StatefulWidget {
   final String pdfUrl;
@@ -16,26 +18,31 @@ class _ComicPdfViewState extends State<ComicPdfView> {
   final GlobalKey<SfPdfViewerState> pdfViewerKey = GlobalKey();
   final supabase = Supabase.instance.client;
 
-
-
   @override
   void initState() {
     super.initState();
-    viewed();
+    getUnityAds();
   }
-  viewed()async{
-        final data = await supabase
-  .from('most_viewed')
-  .select().eq('user_name', kUser!.email.toString()).eq('comic_id', widget.comicId).maybeSingle();
-  if(data == null){
-await supabase
-  .rpc('increment_views', params: {
-    'comic_id': widget.comicId,});
-    await supabase
-    .from('most_viewed')
-    .insert({'user_name': kUser!.email.toString(), 'comic_id': widget.comicId});
+
+  viewed() async {
+    final data = await supabase
+        .from('most_viewed')
+        .select()
+        .eq('user_name', kUser!.email.toString())
+        .eq('comic_id', widget.comicId)
+        .maybeSingle();
+    if (data == null) {
+      await supabase.rpc(
+        'increment_views',
+        params: {'comic_id': widget.comicId},
+      );
+      await supabase.from('most_viewed').insert({
+        'user_name': kUser!.email.toString(),
+        'comic_id': widget.comicId,
+      });
+    }
   }
-  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -49,6 +56,23 @@ await supabase
           onDocumentLoaded: (PdfDocumentLoadedDetails details) {},
         ),
       ),
+    );
+  }
+
+  getUnityAds() {
+    UnityAds.load(
+      placementId: 'Rewarded_Android',
+      onComplete: (placementId) {
+        UnityAds.showVideoAd(
+          placementId: placementId,
+          onSkipped: (placementId) => viewed(),
+          onComplete: (placementId) => viewed(),
+          onFailed: (placementId, error, message) =>
+              getUnityAds(),
+        );
+      },
+      onFailed: (placementId, error, message) =>
+          getUnityAds(),
     );
   }
 }
