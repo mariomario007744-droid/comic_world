@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comic_world/const.dart';
 import 'package:comic_world/models/comic_part_model.dart';
@@ -30,14 +32,24 @@ class _ChaptersSectionState extends State<ChaptersSection> {
 
   getData() async {
     if (mounted) {
-      final response = await RequestData().fetchPartComic(
-        comicId: widget.comicId,
-      );
-      for (var element in response) {
-        dataParts.add(ComicPartModel.fromJson(element));
-      }
-      if (mounted) {
-        setState(() {});
+      try {
+        final response = await RequestData().fetchPartComic(
+          comicId: widget.comicId,
+        );
+        for (var element in response) {
+          dataParts.add(ComicPartModel.fromJson(element));
+        }
+        if (mounted) {
+          setState(() {});
+        }
+      } on SocketException {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('يرجي التحقق من اتصالك بالانترنت')),
+        );
+      } on Exception catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('حدث خطأ: $e')));
       }
     }
   }

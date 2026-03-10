@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:comic_world/models/comic_model.dart';
 import 'package:comic_world/requests/request_data.dart';
 import 'package:comic_world/views/comic_grid_view.dart';
@@ -21,17 +23,27 @@ class _ComicCategoryState extends State<ComicCategory> {
 
   getCategory() async {
     if (mounted) {
-  final data = await RequestData().fetchCategoryComic(
-    comicId: widget.data.id,
-  );
-  if (mounted) {
-  setState(() {
-    for (var element in data) {
-      category.add(element['type']);
+      try {
+        final data = await RequestData().fetchCategoryComic(
+          comicId: widget.data.id,
+        );
+        if (mounted) {
+          setState(() {
+            for (var element in data) {
+              category.add(element['type']);
+            }
+          });
+        }
+      } on SocketException {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('يرجي التحقق من اتصالك بالانترنت')),
+        );
+      } on Exception catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('حدث خطأ: $e')));
+      }
     }
-  });
-}
-}
   }
 
   @override
@@ -42,26 +54,25 @@ class _ComicCategoryState extends State<ComicCategory> {
       children: category.map((categoryName) {
         return ElevatedButton(
           style: TextButton.styleFrom(
-                backgroundColor: Colors.white.withValues(alpha: 0.2),
-              ),
+            backgroundColor: Colors.white.withValues(alpha: 0.2),
+          ),
           onPressed: () {
             if (mounted) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => ComicGridView(
-        title: categoryName,
-        dataFunc:() => RequestData().fetchThisCategoryComic(
-          category: categoryName,
-          limit: 40,
-        ),
-      ),
-    ),
-  );
-}
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ComicGridView(
+                    title: categoryName,
+                    dataFunc: () => RequestData().fetchThisCategoryComic(
+                      category: categoryName,
+                      limit: 40,
+                    ),
+                  ),
+                ),
+              );
+            }
           },
-          child: Text(categoryName,style: TextStyle(color: Colors.white70),
-),
+          child: Text(categoryName, style: TextStyle(color: Colors.white70)),
         );
       }).toList(),
     );

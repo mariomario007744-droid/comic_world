@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:comic_world/const.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -25,21 +27,33 @@ class _ComicPdfViewState extends State<ComicPdfView> {
   }
 
   viewed() async {
-    final data = await supabase
-        .from('most_viewed')
-        .select()
-        .eq('user_name', kUser!.email.toString())
-        .eq('comic_id', widget.comicId)
-        .maybeSingle();
-    if (data == null) {
-      await supabase.rpc(
-        'increment_views',
-        params: {'comic_id': widget.comicId},
+    try {
+      final data = await supabase
+          .from('most_viewed')
+          .select()
+          .eq('user_name', kUser!.email.toString())
+          .eq('comic_id', widget.comicId)
+          .maybeSingle();
+      if (data == null) {
+        await supabase.rpc(
+          'increment_views',
+          params: {'comic_id': widget.comicId},
+        );
+        await supabase.from('most_viewed').insert({
+          'user_name': kUser!.email.toString(),
+          'comic_id': widget.comicId,
+        });
+      }
+    } on SocketException {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('يرجي التحقق من اتصالك بالانترنت')),
       );
-      await supabase.from('most_viewed').insert({
-        'user_name': kUser!.email.toString(),
-        'comic_id': widget.comicId,
-      });
+    } on Exception catch (e) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('حدث خطأ: $e')));
     }
   }
 
@@ -67,12 +81,15 @@ class _ComicPdfViewState extends State<ComicPdfView> {
           placementId: placementId,
           onSkipped: (placementId) => viewed(),
           onComplete: (placementId) => viewed(),
-          onFailed: (placementId, error, message) =>
-              getUnityAds(),
+          onFailed: (placementId, error, message) =>getUnityAds()
         );
       },
-      onFailed: (placementId, error, message) =>
-          getUnityAds(),
+      onFailed: (placementId, error, message) {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('يرجي التحقق من اتصالك بالانترنت')),
+            );
+          },
     );
   }
 }
