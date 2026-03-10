@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:comic_world/cubits/search_suggestions/search_suggestions_state.dart';
 import 'package:comic_world/requests/request_data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,14 +35,18 @@ class SearchSuggestionsCubit extends Cubit<SearchSuggestionsState> {
     _debounce = Timer(const Duration(milliseconds: 400), () async {
       _lastQuery = query;
 
-      final List<Map<String, dynamic>> data =
-          await RequestData().fetchSuggestions(query: query);
-
-      if (data.isNotEmpty) {
-        emit(SuggestionsState(suggestions: data));
-      } else {
-        emit(NoSuggestionsState());
-      }
+      try {
+  final List<Map<String, dynamic>> data =
+      await RequestData().fetchSuggestions(query: query);
+  
+  if (data.isNotEmpty) {
+    emit(SuggestionsState(suggestions: data));
+  } else {
+    emit(NoSuggestionsState());
+  }
+} on SocketException {
+  emit(DisconnectionState());
+}
     });
   }
 

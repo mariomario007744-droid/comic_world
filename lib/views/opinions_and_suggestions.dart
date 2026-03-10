@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:comic_world/const.dart';
 import 'package:comic_world/widgets/custom_form_button.dart';
 import 'package:comic_world/widgets/custom_show_dialog.dart';
@@ -62,6 +64,10 @@ class OpinionsAndSuggestions extends StatelessWidget {
                               ScaffoldMessenger.of(
                                 context,
                               ).showSnackBar(SnackBar(content: Text(e.message)));
+                            } on SocketException{
+                              ScaffoldMessenger.of(
+                                context,
+                              ).showSnackBar(SnackBar(content: Text('تعذر الارسال يرجي التحقق من الانترنت')));
                             }
                           }
                         },

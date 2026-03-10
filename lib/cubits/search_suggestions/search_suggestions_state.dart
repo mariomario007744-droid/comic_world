@@ -8,3 +8,6 @@ class SuggestionsState extends SearchSuggestionsState{
 }
 
 class NoSuggestionsState extends SearchSuggestionsState{}
+
+class DisconnectionState extends SearchSuggestionsState{}
+

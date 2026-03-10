@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comic_world/models/comic_model.dart';
 import 'package:comic_world/views/comic_view.dart';
+import 'package:comic_world/widgets/check_network.dart';
 import 'package:flutter/material.dart';
 
 class HorizontalListView extends StatefulWidget {
@@ -13,6 +16,7 @@ class HorizontalListView extends StatefulWidget {
 
 class _HorizontalListViewState extends State<HorizontalListView> {
   List<ComicModel> data = [];
+  bool isConected=true;
 
   @override
   void initState() {
@@ -21,18 +25,31 @@ class _HorizontalListViewState extends State<HorizontalListView> {
   }
 
   getData() async {
-    final response = await widget.dataFunc();
-    for (var element in response) {
-      data.add(ComicModel.fromJson(element));
-    }
-    setState(() {});
+    if (mounted) {
+  try {
+  final response = await widget.dataFunc();
+  for (var element in response) {
+    data.add(ComicModel.fromJson(element));
+  }
+  setState(() {});
+} on SocketException {
+  isConected=false;
+  setState(() {
+    
+  });}
+}
   }
 
   @override
   Widget build(BuildContext context) {
-    return data == []
-        ? const Center(child: CircularProgressIndicator())
-        : SizedBox(
+    if (data == []||data.isEmpty) {
+      if (isConected==true) {
+  return const Center(child: CircularProgressIndicator());
+}else{
+  return CheckNetwork(getData: ()=> getData());
+}
+    } else {
+      return SizedBox(
             height: 210,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -134,5 +151,6 @@ class _HorizontalListViewState extends State<HorizontalListView> {
               },
             ),
           );
+    }
   }
 }

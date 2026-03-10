@@ -103,8 +103,13 @@ class HomeView extends StatelessWidget {
                                         );
                                       },
                                     )
-                                  : const Center(
-                                      child: Text(
+                                  : Center(
+                                      child:state is DisconnectionState?
+                                      Text(
+                                        'انقطع الاتصال بالانترنت',
+                                        style: TextStyle(color: kTextColor),
+                                      )
+                                      : Text(
                                         'لا توجد اقتراحات',
                                         style: TextStyle(color: kTextColor),
                                       ),

@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:comic_world/const.dart';
 import 'package:comic_world/models/category_model.dart';
 import 'package:comic_world/requests/request_data.dart';
 import 'package:comic_world/views/comic_grid_view.dart';
+import 'package:comic_world/widgets/check_network.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesView extends StatefulWidget {
@@ -13,6 +16,8 @@ class CategoriesView extends StatefulWidget {
 
 class _CategoriesViewState extends State<CategoriesView> {
   List<CategoryModel> data = [];
+    bool isConected=true;
+
   @override
   void initState() {
     super.initState();
@@ -20,11 +25,19 @@ class _CategoriesViewState extends State<CategoriesView> {
   }
 
   getCategory() async {
-    final request = await RequestData().featchCategorys();
-    for (var element in request) {
-      data.add(CategoryModel.fromJson(element));
-    }
-    setState(() {});
+    if (mounted) {
+  try {
+  final request = await RequestData().featchCategorys();
+  for (var element in request) {
+    data.add(CategoryModel.fromJson(element));
+  }
+  setState(() {});
+} on SocketException{
+  isConected=false;
+  setState(() {
+    
+  });}
+}
   }
 
   @override
@@ -35,7 +48,10 @@ class _CategoriesViewState extends State<CategoriesView> {
         backgroundColor: kBackgroundColor,
         body: SafeArea(
           child: data.isEmpty
-              ? Center(child: CircularProgressIndicator(color: kTextColor))
+              ? isConected? Center(child: CircularProgressIndicator(color: kTextColor)):Padding(
+                padding: const EdgeInsets.all(48.0),
+                child: Center(child: CheckNetwork(getData: ()=>getCategory())),
+              )
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

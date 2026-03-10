@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comic_world/models/comic_model.dart';
 import 'package:comic_world/views/comic_view.dart';
+import 'package:comic_world/widgets/check_network.dart';
 import 'package:flutter/material.dart';
 import 'package:comic_world/const.dart';
 
@@ -14,7 +17,7 @@ class ComicGrid extends StatefulWidget {
 
 class _ComicGridState extends State<ComicGrid> {
   List<ComicModel> data = [];
-
+  bool isConected=true;
   @override
   void initState() {
     super.initState();
@@ -23,23 +26,34 @@ class _ComicGridState extends State<ComicGrid> {
 
   getData() async {
     if (mounted) {
+  try {
+    isConected=true;
   final response = await widget.dataFunc();
   for (var element in response) {
     data.add(ComicModel.fromJson(element));
   }
   setState(() {});
+} on SocketException {
+  isConected=false;
+  setState(() {
+    
+  });
+}
 }
   }
 
   @override
   Widget build(BuildContext context) {
-    return data == []
-        ? Center(
-          child: SizedBox(
-            height: 150,
-            child: const Center(child: CircularProgressIndicator())),
-        )
-        : GridView.builder(
+    if (data ==[]||data.isEmpty) {
+      if (isConected==true) {
+  return Center(
+      child: const Center(child: CircularProgressIndicator()),
+    );
+}else{
+  return CheckNetwork(getData: () => getData(),);
+}
+    } else {
+      return GridView.builder(
             shrinkWrap: true,
             physics:widget.scrolling?ScrollPhysics(): NeverScrollableScrollPhysics(),
             itemCount: data.length,
@@ -92,5 +106,6 @@ class _ComicGridState extends State<ComicGrid> {
               );
             },
           );
+    }
   }
 }
