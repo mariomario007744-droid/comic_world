@@ -12,13 +12,11 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   await Supabase.initialize(url: kUrlSupaBase, anonKey: kAnonKeySupaBase);
-  Supabase.instance.client;
   if (Supabase.instance.client.auth.currentUser != null &&
       Supabase.instance.client.auth.currentSession != null) {
     kUser = Supabase.instance.client.auth.currentUser;
     kSession = Supabase.instance.client.auth.currentSession;
   }
-  // Initialize the Mobile Ads SDK.
   WidgetsFlutterBinding.ensureInitialized();
   // MobileAds.instance.initialize();
   UnityAds.init(gameId: '6061077',testMode: true);
