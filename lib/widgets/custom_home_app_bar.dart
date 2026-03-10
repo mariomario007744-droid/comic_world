@@ -1,4 +1,6 @@
 import 'package:comic_world/cubits/search_suggestions/search_suggestions_cubit.dart';
+import 'package:comic_world/requests/request_data.dart';
+import 'package:comic_world/views/comic_grid_view.dart';
 import 'package:comic_world/widgets/menu_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:comic_world/const.dart';
@@ -34,8 +36,25 @@ class CustomHomeAppBar extends StatelessWidget {
 
           Expanded(
             child: TextField(
+              textInputAction: TextInputAction.search,
+              onSubmitted: (value) async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ComicGridView(
+                        dataFunc: () =>
+                            RequestData().fetchSuggestionsList(query: value),
+                        title: 'محتوي البحث',
+                      );
+                    },
+                  ),
+                );
+              },
               onChanged: (value) {
-                BlocProvider.of<SearchSuggestionsCubit>(context).getSuggestions(query: value);
+                BlocProvider.of<SearchSuggestionsCubit>(
+                  context,
+                ).getSuggestions(query: value);
               },
               style: TextStyle(color: kTextColor),
               decoration: InputDecoration(

@@ -119,7 +119,15 @@ class RequestData {
     final data = await supabase
   .from('comic')
   .select('name,id')
-  .ilike('name', '%$query%');
+  .ilike('name', '%$query%').limit(20);
+  return data;
+  }
+
+    fetchSuggestionsList({required String query})async{
+    final data = await supabase
+  .from('comic')
+  .select()
+  .ilike('name', '%$query%').limit(50);
   return data;
   }
 
