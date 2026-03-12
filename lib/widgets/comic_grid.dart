@@ -32,12 +32,16 @@ class _ComicGridState extends State<ComicGrid> {
   for (var element in response) {
     data.add(ComicModel.fromJson(element));
   }
+  if (mounted) {
   setState(() {});
+}
 } on SocketException {
   isConected=false;
+  if (mounted) {
   setState(() {
     
   });
+}
 }
 }
   }

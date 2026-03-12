@@ -11,7 +11,7 @@ import 'package:comic_world/const.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginView extends StatelessWidget {
-  final String id='LoginView';
+  static String id='LoginView';
   final formKey = GlobalKey<FormState>();
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();

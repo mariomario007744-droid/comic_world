@@ -1,6 +1,4 @@
-
 import 'dart:io';
-
 import 'package:comic_world/cubits/search_suggestions/search_suggestions_state.dart';
 import 'package:comic_world/requests/request_data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,12 +24,10 @@ class SearchSuggestionsCubit extends Cubit<SearchSuggestionsState> {
     // منع تكرار نفس الكلمة
     if (query == _lastQuery) return;
 
-    // إلغاء التايمر القديم
     if (_debounce?.isActive ?? false) {
       _debounce!.cancel();
     }
 
-    // عمل debounce
     _debounce = Timer(const Duration(milliseconds: 400), () async {
       _lastQuery = query;
 

@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:comic_world/const.dart';
 import 'package:flutter/material.dart';
 
 class CheckNetwork extends StatelessWidget{
   CheckNetwork({required this.getData});
-  Future<dynamic> Function() getData;
+  final  Future<dynamic> Function() getData;
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -16,7 +18,9 @@ class CheckNetwork extends StatelessWidget{
     ),
     ElevatedButton(style: ElevatedButton.styleFrom(
       backgroundColor: kThemeColor
-    ),onPressed: ()=>getData(), child: Text('إعادة المحاولة',style: TextStyle(color: kTextColor),)),
+    ),onPressed: (){
+      Timer(Duration(seconds: 1), getData);
+    }, child: Text('إعادة المحاولة',style: TextStyle(color: kTextColor),)),
   ],);
   }
 }

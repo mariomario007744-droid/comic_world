@@ -3,6 +3,7 @@ import 'package:comic_world/const.dart';
 import 'package:comic_world/views/home_view.dart';
 import 'package:comic_world/views/login_view.dart';
 import 'package:comic_world/views/reset_password_view.dart';
+import 'package:comic_world/views/splash_view.dart';
 import 'package:flutter/material.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -19,7 +20,7 @@ void main() async {
   }
   WidgetsFlutterBinding.ensureInitialized();
   // MobileAds.instance.initialize();
-  UnityAds.init(gameId: '6061077',testMode: true);
+  UnityAds.init(gameId: '6061077',testMode: false);
   runApp(ComicWorld());
 
   _handleDeepLinks();
@@ -42,7 +43,6 @@ void _handleDeepLinks() async {
       }
     },
     onError: (err) {
-      print('خطأ في استقبال الرابط: $err');
     },
   );
 }
@@ -53,7 +53,7 @@ bool _isResetPasswordLink(Uri uri) {
 
 void _navigateToResetPassword() {
   WidgetsBinding.instance.addPostFrameCallback((_) {
-    navigatorKey.currentState?.pushNamed(ResetPasswordView().id);
+    navigatorKey.currentState?.pushNamed(ResetPasswordView.id);
   });
 }
 
@@ -66,11 +66,12 @@ class ComicWorld extends StatelessWidget {
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
 
-      initialRoute: kSession == null ? LoginView().id : HomeView().id,
+      initialRoute: SplashScreen.splashView,
       routes: {
-        LoginView().id: (context) => LoginView(),
-        HomeView().id: (context) => const HomeView(),
-        ResetPasswordView().id: (context) => ResetPasswordView(),
+        LoginView.id: (context) => LoginView(),
+        HomeView.id: (context) => const HomeView(),
+        ResetPasswordView.id: (context) => ResetPasswordView(),
+        SplashScreen.splashView:  (context) => SplashScreen(),
       },
     );
   }

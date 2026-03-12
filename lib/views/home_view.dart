@@ -10,7 +10,7 @@ import 'package:comic_world/const.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeView extends StatelessWidget {
-  final String id = 'HomeView';
+  static String id = 'HomeView';
 
   const HomeView({super.key});
   @override

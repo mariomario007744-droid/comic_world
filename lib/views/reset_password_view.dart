@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ResetPasswordView extends StatelessWidget {
-  final String id = 'ResetPasswordView';
+  static String id = 'ResetPasswordView';
   final formKey = GlobalKey<FormState>();
   final TextEditingController password = TextEditingController();
 

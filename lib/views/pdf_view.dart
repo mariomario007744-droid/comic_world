@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:comic_world/const.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -19,6 +18,8 @@ class ComicPdfView extends StatefulWidget {
 class _ComicPdfViewState extends State<ComicPdfView> {
   final GlobalKey<SfPdfViewerState> pdfViewerKey = GlobalKey();
   final supabase = Supabase.instance.client;
+  
+  bool _canShowComic = false; 
 
   @override
   void initState() {
@@ -47,7 +48,7 @@ class _ComicPdfViewState extends State<ComicPdfView> {
     } on SocketException {
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('يرجي التحقق من اتصالك بالانترنت')),
+        const SnackBar(content: Text('يرجي التحقق من اتصالك بالانترنت')),
       );
     } on Exception catch (e) {
       Navigator.pop(context);
@@ -61,14 +62,18 @@ class _ComicPdfViewState extends State<ComicPdfView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: SfPdfViewer.network(
-          canShowPageLoadingIndicator: true,
-          canShowScrollStatus: true,
-          widget.pdfUrl,
-          key: pdfViewerKey,
-          enableDoubleTapZooming: true,
-          onDocumentLoaded: (PdfDocumentLoadedDetails details) {},
-        ),
+        body: _canShowComic
+            ? SfPdfViewer.network(
+                canShowPageLoadingIndicator: true,
+                canShowScrollStatus: true,
+                widget.pdfUrl,
+                key: pdfViewerKey,
+                enableDoubleTapZooming: true,
+                onDocumentLoaded: (PdfDocumentLoadedDetails details) {},
+              )
+            : const Center(
+                child: CircularProgressIndicator(),
+              ),
       ),
     );
   }
@@ -79,17 +84,27 @@ class _ComicPdfViewState extends State<ComicPdfView> {
       onComplete: (placementId) {
         UnityAds.showVideoAd(
           placementId: placementId,
-          onSkipped: (placementId) => viewed(),
-          onComplete: (placementId) => viewed(),
-          onFailed: (placementId, error, message) =>getUnityAds()
+          onSkipped: (placementId) {
+            viewed();
+            setState(() {
+              _canShowComic = true;
+            });
+          },
+          onComplete: (placementId) {
+            viewed();
+            setState(() {
+              _canShowComic = true;
+            });
+          },
+          onFailed: (placementId, error, message) => getUnityAds(),
         );
       },
       onFailed: (placementId, error, message) {
-            Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('يرجي التحقق من اتصالك بالانترنت')),
-            );
-          },
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('يرجي التحقق من اتصالك بالانترنت')),
+        );
+      },
     );
   }
 }
